@@ -30,7 +30,7 @@ public class SaleService {
 	}
 
 	public Page<SaleMinDTO> getReportAll(Pageable pageable) {
-		LocalDate startDate = LocalDate.now().minusYears(12);
+		LocalDate startDate = LocalDate.now().minusYears(1);
 		Page<Sale> result = repository.getReportAll(startDate, pageable);
 		return result.map(x -> new SaleMinDTO(x));
 	}
@@ -41,7 +41,7 @@ public class SaleService {
 	}
 
 	public List<SellerMinDTO> getSummaryAll() {
-		LocalDate startDate = LocalDate.now().minusYears(12);
+		LocalDate startDate = LocalDate.now().minusYears(1);
 		List<SellerMinProjection> projections = repository.getSummaryAll(startDate);
 		return projections.stream().map(projection -> new SellerMinDTO(projection.getName(), projection.getSales())).collect(Collectors.toList());
 	}

@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
-    @Query("SELECT obj FROM Sale obj WHERE obj.date >= :startDate")
+    @Query("SELECT obj FROM Sale obj WHERE DATE_TRUNC('DAY', obj.date) >= :startDate")
     Page<Sale> getReportAll(@Param("startDate") LocalDate startDate, Pageable pageable);
 
     @Query("SELECT obj " +
@@ -26,7 +26,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             "ROUND(SUM(TB_SALES.AMOUNT), 2) AS SALES " +
             "FROM TB_SELLER " +
             "INNER JOIN TB_SALES ON TB_SALES.SELLER_ID = TB_SELLER.ID " +
-            "WHERE TB_SALES.date >= :startDate " +
+            "WHERE DATE_TRUNC('DAY',TB_SALES.date) >= :startDate " +
             "GROUP BY TB_SELLER.ID, TB_SELLER.NAME")
     List<SellerMinProjection> getSummaryAll(@Param("startDate") LocalDate startDate);
 
